@@ -33,7 +33,10 @@ nextflow run $PIPELINE_PATH -profile conda -params-file $PARAMS_PATH/params.yaml
 nextflow run $PIPELINE_PATH -profile singularity,slurm -params-file $PARAMS_PATH/params.yaml
 ```
 
-Edit `params.yaml` first (at least `manifest`, `ref_db`, `input_dir`).
+Launch from your analysis directory: by default the manifest is read from
+`<launch dir>/metadata/sample-manifest.csv` and the reference from
+`<launch dir>/misc/ref/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta`.
+To use other locations, set `manifest` / `ref_db` in `params.yaml` as absolute paths.
 
 ## Input manifest
 
@@ -69,10 +72,10 @@ results/
 
 | param | default | meaning |
 |---|---|---|
-| `manifest` | `sample-manifest.csv` | input CSV |
+| `manifest` | `<launch dir>/metadata/sample-manifest.csv` | input CSV |
 | `input_dir` | `.` | anchor for relative `bam_path` values |
 | `merge_barcode_bams` | `false` | merge all `*.bam` chunks per barcode (see note) |
-| `ref_db` | SILVA 144 NR99 trunc FASTA | orientation reference |
+| `ref_db` | `<launch dir>/misc/ref/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta` | orientation reference |
 | `min_len` / `max_len` / `qscore` | 800 / 2200 / 15 | NanoFilt thresholds |
 | `threads` | 12 | cpus for samtools & NanoPlot |
 | `max_cpus` / `max_memory` / `max_time` | 12 / 32.GB / 24.h | ceilings applied to every process |

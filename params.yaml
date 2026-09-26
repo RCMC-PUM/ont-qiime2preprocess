@@ -3,7 +3,9 @@
 
 # ---- Input ----------------------------------------------------------------
 # Path to the sample manifest (columns: patient_id,barcode,run_name,bam_path)
-manifest: "metadata/sample-manifest.csv"
+# Default (nextflow.config): <launch dir>/metadata/sample-manifest.csv
+# Uncomment only to override, and use an ABSOLUTE path.
+# manifest: "/abs/path/to/sample-manifest.csv"
 
 # Relative bam_path values in the manifest are resolved against this directory.
 # Default "." means: launch nextflow from the same dir the notebook ran in,
@@ -18,7 +20,9 @@ merge_barcode_bams: false
 
 # ---- Reference ------------------------------------------------------------
 # Unaligned, de-gapped SILVA NR99 FASTA (NOT the *_full_align_trunc file).
-ref_db: "ref/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta"
+# Default (nextflow.config): <launch dir>/misc/ref/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta
+# Uncomment only to override, and use an ABSOLUTE path.
+# ref_db: "/abs/path/to/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta"
 
 # ---- Output ---------------------------------------------------------------
 outdir: "results"
