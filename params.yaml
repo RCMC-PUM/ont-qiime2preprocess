@@ -1,0 +1,36 @@
+# EPICARD ONT 16S preprocessing - run parameters
+# Pass with:  nextflow run . -profile docker -params-file params.yaml
+
+# ---- Input ----------------------------------------------------------------
+# Path to the sample manifest (columns: patient_id,barcode,run_name,bam_path)
+manifest: "metadata/sample-manifest.csv"
+
+# Relative bam_path values in the manifest are resolved against this directory.
+# Default "." means: launch nextflow from the same dir the notebook ran in,
+# so the manifest's "../data/basecalled/..." paths resolve as they did there.
+# Set to an absolute base to relocate, or put absolute paths in the manifest.
+input_dir: "."
+
+# One BAM per barcode (as listed in the manifest) is the default.
+# Set true to instead merge ALL *.bam chunks found in each barcode directory
+# (MinKNOW/dorado often split bam_pass/<barcode>/ into *_0.bam, *_1.bam, ...).
+merge_barcode_bams: false
+
+# ---- Reference ------------------------------------------------------------
+# Unaligned, de-gapped SILVA NR99 FASTA (NOT the *_full_align_trunc file).
+ref_db: "ref/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta"
+
+# ---- Output ---------------------------------------------------------------
+outdir: "results"
+publish_mode: "copy"        # copy | symlink | link | move
+
+# ---- Filtering (NanoFilt) -------------------------------------------------
+min_len: 800
+max_len: 2200
+qscore: 15
+
+# ---- Resources ------------------------------------------------------------
+threads: 12                 # cpus requested by samtools & NanoPlot steps
+max_cpus: 12                # hard ceiling on cpus for any process
+max_memory: "32.GB"
+max_time: "24.h"
