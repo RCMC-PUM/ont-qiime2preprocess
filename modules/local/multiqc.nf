@@ -9,7 +9,7 @@ process MULTIQC {
     // own command runs. Harmless no-op if the image has no entrypoint.
     containerOptions '--entrypoint ""'
 
-    publishDir "${params.outdir}/QC/multiqc", mode: params.publish_mode
+    publishDir { "${params.outdir}/QC/multiqc" }, mode: params.publish_mode
 
     input:
     path('nanoplot_stats/*')

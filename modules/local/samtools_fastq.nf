@@ -1,11 +1,11 @@
 process SAMTOOLS_FASTQ {
 
-    tag "${meta.id}"
+    tag { meta.id }
 
     container 'staphb/samtools:1.22.1'
     conda 'bioconda::samtools=1.22.1'
 
-    publishDir "${params.outdir}/fastq/${meta.run}/${meta.barcode}", mode: params.publish_mode
+    publishDir { "${params.outdir}/fastq/${meta.run}/${meta.barcode}" }, mode: params.publish_mode
 
     input:
     tuple val(meta), path(bams)

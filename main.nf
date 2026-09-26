@@ -1,9 +1,11 @@
+#!/usr/bin/env nextflow
 /*
  * EPICARD ONT 16S rRNA preprocessing
  * BAM -> FASTQ -> QC -> length/quality filter -> QC -> strand orientation -> MultiQC
+ *
+ * Derived from 4-Qiime2_analysis.ipynb (the per-sample Python loop),
+ * turned into a per-sample Nextflow workflow driven by the sample manifest.
  */
-
-nextflow.enable.dsl = 2
 
 include { SAMTOOLS_FASTQ                 } from './modules/local/samtools_fastq.nf'
 include { NANOPLOT_RAW ; NANOPLOT_FILT   } from './modules/local/nanoplot.nf'
@@ -17,7 +19,7 @@ include { WRITE_QIIME_MANIFEST           } from './modules/local/write_qiime_man
 // ---------------------------------------------------------------------------
 
 // Resolve a manifest path: absolute stays as-is, relative is anchored at params.input_dir
-def resolvePath = { p ->
+def resolvePath(p) {
     def pp = (p as String).trim()
     def f  = file(pp)
     return f.isAbsolute() ? f : file("${params.input_dir}/${pp}")
@@ -52,12 +54,12 @@ workflow {
         .splitCsv(header: true)
         .map { row ->
             def meta = [
-                id      : (row.id ?: '').trim(),
+                id      : (row.patient_id ?: '').trim(),
                 barcode : (row.barcode    ?: '').trim(),
-                run     : (row.run   ?: '').trim()
+                run     : (row.run_name   ?: '').trim()
             ]
             if( !meta.id || !meta.barcode )
-                error "Manifest row missing id/barcode: ${row}"
+                error "Manifest row missing patient_id/barcode: ${row}"
 
             def rawp = (row.bam_path ?: '').trim()
             if( !rawp )
@@ -108,10 +110,4 @@ workflow {
         }
         .collectFile(name: 'qiime2-manifest.rows.tsv', newLine: true, sort: true)
     WRITE_QIIME_MANIFEST( ch_rows )
-}
-
-workflow.onComplete {
-    log.info ( workflow.success
-        ? "\nDone. Results in: ${params.outdir}\n"
-        : "\nFailed after ${workflow.duration}. See .nextflow.log\n" )
 }

@@ -10,7 +10,7 @@ process WRITE_QIIME_MANIFEST {
     container 'staphb/samtools:1.22.1'   // just needs a shell + coreutils
     conda "${projectDir}/env/ont_env.yaml"
 
-    publishDir "${params.outdir}", mode: params.publish_mode
+    publishDir { "${params.outdir}" }, mode: params.publish_mode
 
     input:
     path(rows)

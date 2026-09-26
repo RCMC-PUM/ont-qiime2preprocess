@@ -1,11 +1,11 @@
 process NANOFILT {
 
-    tag "${meta.id}"
+    tag { meta.id }
 
     container 'cautree/nanofilt:latest'
     conda "${projectDir}/env/ont_env.yaml"
 
-    publishDir "${params.outdir}/filtered/${meta.run}/${meta.barcode}", mode: params.publish_mode
+    publishDir { "${params.outdir}/filtered/${meta.run}/${meta.barcode}" }, mode: params.publish_mode
 
     input:
     tuple val(meta), path(fastq)

@@ -6,12 +6,12 @@
 
 process NANOPLOT_RAW {
 
-    tag "${meta.id}"
+    tag { meta.id }
 
     container 'staphb/nanoplot:1.46.2'
     conda "${projectDir}/env/ont_env.yaml"
 
-    publishDir "${params.outdir}/QC/initial", mode: params.publish_mode
+    publishDir { "${params.outdir}/QC/initial" }, mode: params.publish_mode
 
     input:
     tuple val(meta), path(bams)
@@ -36,12 +36,12 @@ process NANOPLOT_RAW {
 
 process NANOPLOT_FILT {
 
-    tag "${meta.id}"
+    tag { meta.id }
 
     container 'staphb/nanoplot:1.46.2'
     conda "${projectDir}/env/ont_env.yaml"
 
-    publishDir "${params.outdir}/QC/posthoc", mode: params.publish_mode
+    publishDir { "${params.outdir}/QC/posthoc" }, mode: params.publish_mode
 
     input:
     tuple val(meta), path(fastq)
