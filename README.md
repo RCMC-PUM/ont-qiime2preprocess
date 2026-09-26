@@ -89,23 +89,6 @@ results/
 
 ## Notes / caveats
 
-- **The conda profile does not use `ont_env.yaml` for everything.** That export
-  only contains **NanoPlot** and **NanoFilt** — it has no `samtools`, `vsearch`,
-  or `multiqc`. So under `-profile conda`:
-  - NanoPlot / NanoFilt → `env/ont_env.yaml` (your file, unchanged)
-  - samtools / vsearch / multiqc → pulled per-process from bioconda
-    (`samtools=1.22.1`, `vsearch=2.30.4`, `multiqc=1.35`)
-  To run everything from one env instead, add those three to `ont_env.yaml` and
-  point the other modules' `conda` directive at it. Also note the export is fully
-  build-pinned (CUDA, arrow, jupyter, …), so it solves slowly and is not very
-  portable across machines — a slim `nanoplot + nanofilt` env solves much faster.
-
-- **Multi-chunk BAMs.** The manifest lists a single `..._0.bam` per barcode.
-  If a barcode's `bam_pass/` dir actually holds several chunks
-  (`_0.bam`, `_1.bam`, …), the default run silently uses only the listed one —
-  the same latent issue as the notebook's `os.listdir()[0]`. Set
-  `merge_barcode_bams: true` to `samtools cat` every chunk in the barcode dir.
-
 - **vsearch `--orient` is single-threaded** (it warns and ignores extra
   threads), so that process is pinned to `cpus = 1`.
 
