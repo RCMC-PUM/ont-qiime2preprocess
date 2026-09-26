@@ -34,8 +34,7 @@ max_len: 2200
 qscore: 15
 
 # ---- Resources ------------------------------------------------------------
-threads: 12                 # cpus requested by samtools & NanoPlot steps
-max_cpus: 12                # hard ceiling on cpus for any process
-process_cpu_budget: 32      # cpus shared by the parallel tasks of one process (sets maxForks)
+threads: 12                 # cpus for MultiQC and the QIIME 2 manifest step
+max_cpus: 32                # cpus shared by ALL running tasks (also caps any single task)
 max_memory: "32.GB"
 max_time: "24.h"

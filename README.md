@@ -77,9 +77,9 @@ results/
 | `merge_barcode_bams` | `false` | merge all `*.bam` chunks per barcode (see note) |
 | `ref_db` | `<launch dir>/misc/ref/SILVA_144_SSURef_NR99_tax_silva_trunc.fasta` | orientation reference |
 | `min_len` / `max_len` / `qscore` | 800 / 2200 / 15 | NanoFilt thresholds |
-| `threads` | 12 | cpus for samtools & NanoPlot |
-| `max_cpus` / `max_memory` / `max_time` | 12 / 32.GB / 24.h | ceilings applied to every process |
-| `process_cpu_budget` | 32 | cpus shared by the parallel tasks of one process (`maxForks` = budget / cpus per task) |
+| `threads` | 12 | cpus for MultiQC and the QIIME 2 manifest step |
+| `max_cpus` | 32 | cpus shared by all running tasks of the pipeline (local executor only); also caps any single task |
+| `max_memory` / `max_time` | 32.GB / 24.h | ceilings applied to every process |
 
 ## Container images
 
