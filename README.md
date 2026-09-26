@@ -79,6 +79,7 @@ results/
 | `min_len` / `max_len` / `qscore` | 800 / 2200 / 15 | NanoFilt thresholds |
 | `threads` | 12 | cpus for samtools & NanoPlot |
 | `max_cpus` / `max_memory` / `max_time` | 12 / 32.GB / 24.h | ceilings applied to every process |
+| `process_cpu_budget` | 32 | cpus shared by the parallel tasks of one process (`maxForks` = budget / cpus per task) |
 
 ## Container images
 

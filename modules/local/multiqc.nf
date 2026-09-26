@@ -24,8 +24,9 @@ process MULTIQC {
     export HOME="\$PWD"
     export MPLCONFIGDIR="\$PWD/.mplconfig"; mkdir -p "\$MPLCONFIGDIR"
 
+    # Default names: multiqc_report.html + multiqc_data/ (matching the outputs above).
+    # Note: --filename X.html would rename the data dir to X_data.
     multiqc nanoplot_stats \\
-        --module nanostat \\
-        --filename multiqc_report.html
+        --module nanostat
     """
 }
