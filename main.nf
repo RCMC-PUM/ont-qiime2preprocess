@@ -2,9 +2,6 @@
 /*
  * EPICARD ONT 16S rRNA preprocessing
  * BAM -> FASTQ -> QC -> length/quality filter -> QC -> strand orientation -> MultiQC
- *
- * Derived from 4-Qiime2_analysis.ipynb (the per-sample Python loop),
- * turned into a per-sample Nextflow workflow driven by the sample manifest.
  */
 
 nextflow.enable.dsl = 2
