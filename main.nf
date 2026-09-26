@@ -2,9 +2,6 @@
 /*
  * EPICARD ONT 16S rRNA preprocessing
  * BAM -> FASTQ -> QC -> length/quality filter -> QC -> strand orientation -> MultiQC
- *
- * Derived from 4-Qiime2_analysis.ipynb (the per-sample Python loop),
- * turned into a per-sample Nextflow workflow driven by the sample manifest.
  */
 
 include { SAMTOOLS_FASTQ                 } from './modules/local/samtools_fastq.nf'
@@ -54,12 +51,12 @@ workflow {
         .splitCsv(header: true)
         .map { row ->
             def meta = [
-                id      : (row.patient_id ?: '').trim(),
+                id      : (row.id ?: '').trim(),
                 barcode : (row.barcode    ?: '').trim(),
-                run     : (row.run_name   ?: '').trim()
+                run     : (row.run   ?: '').trim()
             ]
             if( !meta.id || !meta.barcode )
-                error "Manifest row missing patient_id/barcode: ${row}"
+                error "Manifest row missing id/barcode: ${row}"
 
             def rawp = (row.bam_path ?: '').trim()
             if( !rawp )
