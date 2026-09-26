@@ -1,11 +1,11 @@
 process VSEARCH_ORIENT {
 
-    tag "${meta.id}"
+    tag { meta.id }
 
     container 'nanozoo/vsearch:2.30.4--d925d0f'
     conda 'bioconda::vsearch=2.30.4'
 
-    publishDir "${params.outdir}/oriented/${meta.run}/${meta.barcode}", mode: params.publish_mode
+    publishDir { "${params.outdir}/oriented/${meta.run}/${meta.barcode}" }, mode: params.publish_mode
 
     input:
     tuple val(meta), path(fastq)
