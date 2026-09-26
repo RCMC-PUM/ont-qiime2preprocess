@@ -1,4 +1,3 @@
-#!/usr/bin/env nextflow
 /*
  * EPICARD ONT 16S rRNA preprocessing
  * BAM -> FASTQ -> QC -> length/quality filter -> QC -> strand orientation -> MultiQC
