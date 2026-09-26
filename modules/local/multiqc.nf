@@ -19,40 +19,31 @@ process MULTIQC {
     path("multiqc_data")       , emit: data
 
     script:
-    // The nanostat module runs twice, splitting the report into "Before filtering"
-    // (*_raw_NanoStats.txt) and "After filtering" (*_filt_NanoStats.txt) sections.
-    // Sample names are cut down to the sample id:
-    //   <id>_<barcode>_raw_NanoStats.txt -> <id>   (barcodes contain no "_", e.g. barcode01)
+    // bin/nanostats_to_mqc.py turns the NanoStats files into MultiQC custom content,
+    // named by sample id: General Statistics with before/after columns, plus
+    // "Before filtering" / "After filtering" sections (stats table + quality plot).
+    // (The nanostat module can't be run twice here: both runs share column keys
+    //  and plot ids, so the "after" values overwrite the "before" ones.)
     """
     set -euo pipefail
     export HOME="\$PWD"
     export MPLCONFIGDIR="\$PWD/.mplconfig"; mkdir -p "\$MPLCONFIGDIR"
 
+    nanostats_to_mqc.py nanoplot_stats mqc_custom \\
+        --filter-info "length ${params.min_len}-${params.max_len} bp, Q >= ${params.qscore}"
+
     cat > mqc_config.yml <<'EOF'
-    module_order:
-      - nanostat:
-          name: "Before filtering"
-          anchor: "nanostat_before"
-          target: ""
-          info: "NanoStat summary of the raw reads (unaligned BAM), before NanoFilt."
-          path_filters:
-            - "*_raw_NanoStats.txt"
-      - nanostat:
-          name: "After filtering"
-          anchor: "nanostat_after"
-          target: ""
-          info: "NanoStat summary of the reads kept by NanoFilt (length ${params.min_len}-${params.max_len} bp, Q >= ${params.qscore})."
-          path_filters:
-            - "*_filt_NanoStats.txt"
-    extra_fn_clean_exts:
-      - type: regex
-        pattern: '_[^_]+_(raw|filt)(_.*)?\$'
+    report_section_order:
+      before_filtering:
+        order: 20
+      after_filtering:
+        order: 10
     EOF
 
     # Default names: multiqc_report.html + multiqc_data/ (matching the outputs above).
     # Note: --filename X.html would rename the data dir to X_data.
-    multiqc nanoplot_stats \\
-        --module nanostat \\
+    multiqc mqc_custom \\
+        --module custom_content \\
         --config mqc_config.yml
     """
 }

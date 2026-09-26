@@ -93,6 +93,12 @@ results/
 
 ## Notes / caveats
 
+- **MultiQC report** is built from the NanoStats files by `bin/nanostats_to_mqc.py`
+  as custom content: General Statistics with before/after filtering columns per
+  sample id, then "Before filtering" and "After filtering" sections (stats table +
+  reads-by-quality plot). MultiQC's own nanostat module isn't used: run twice, its
+  column keys and plot ids collide and the "after" values overwrite the "before" ones.
+
 - **vsearch `--orient` is single-threaded** (it warns and ignores extra
   threads), so that process is pinned to `cpus = 1`.
 
