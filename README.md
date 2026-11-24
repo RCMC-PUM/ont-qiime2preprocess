@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24496989.svg)](https://doi.org/10.5281/zenodo.24496989)
 # ONT 16S samples preprocessing pipeline (Nextflow)
 
 Per-sample preprocessing for the ONT 16S rRNA samples in Nextflow DSL2.
